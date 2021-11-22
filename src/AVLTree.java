@@ -5,20 +5,25 @@ import java.util.Stack;
  *
  * AVLTree
  *
- * An implementation of aמ AVL Tree with
+ * An implementation of an AVL Tree with
  * distinct integer keys and info.
  *
  */
 
 public class AVLTree {
-	int size;
-	IAVLNode root;
+	int size; // integer the save the number of real nodes in the tree
+	IAVLNode root; // pointer to the root of the tree (if the tree empty, the root is non-real node)
 
-	public AVLTree(){ //constructor
+	/**
+	 * constructor of empty AVL tree, so the size of the tree initialized to 0
+	 * creating new non-real node and making it the root
+	 */
+	public AVLTree(){
 		this.size=0;
 		root=new AVLNode();
 	}
-  /**`
+
+  /**
    * public boolean empty()
    *
    * Returns true if and only if the tree is empty.
@@ -36,17 +41,13 @@ public class AVLTree {
    */
   public String search(int k)
   {
-  	IAVLNode node= find(k);
-  	if(node.isRealNode()){
-  		return node.getValue();
-	}
-
-  	else{
-  		return null;
-	}
-
+	  IAVLNode node= find(k); // returning pointer to the node in tree with the right key,
+	  // if the key doesn't exist in the tree returning non-real node from the tree
+	  if(node.isRealNode()){
+		  return node.getValue();// if the node is real returning the info of the node
+	  }
+	  return null; // else returning null - the key isn't in the tree
   }
-
 
   /**
    * public int insert(int k, String i)
@@ -57,39 +58,34 @@ public class AVLTree {
    * A promotion/rotation counts as one re-balance operation, double-rotation is counted as 2.
    * Returns -1 if an item with key k already exists in the tree.
    */
-   public int insert(int k, String i) {
-	AVLNode myNode = (AVLNode) find(k); //myNode is initialized  with a pointer
-   	if(myNode.isRealNode()){
-   		return -1;
-	}
-   	this.size+=1;
-   	//inserting k into the tree
-   	myNode.setHeight(0);
-   	IAVLNode leftSon = new AVLNode();
-   	IAVLNode rightSon = new AVLNode();
-	myNode.setLeft((leftSon));
-	myNode.setRight(rightSon);
-	leftSon.setParent(myNode);
-	rightSon.setParent(myNode);
-	myNode.setKey(k);
-	myNode.setValue(i);
-	if(this.size==1){
-		return 0;
-	}
-	//balancing the tree
-	IAVLNode parent = myNode.parent;
-	if(parent.isRealNode()){
-
-	}
-	//not inserting on a leaf
-	if(parent.getLeft().isRealNode()&&parent.getRight().isRealNode()){ //no balancing required
-		return 0;
-	}
-	//inserting on a leaf
-	else{
-		parent.setHeight(parent.getHeight()+1);
-		return (balance(parent.getParent()));
-	}
+  public int insert(int k, String i) {
+	  AVLNode myNode = (AVLNode) find(k); // returning pointer to the node in tree with the right key,
+	  // if the key doesn't exist in the tree returning non-real node from the tree
+	  if(myNode.isRealNode()){ // if the node is real so the key is already exist in the tree
+		  return -1;
+	  }
+	  this.size+=1; // increasing the size of the tree in 1
+	  myNode.setHeight(0); // we change the height of the node to zero because we can only insert to non-real nodes
+	  IAVLNode leftSon = new AVLNode(); //creating new non-real node as a left son
+	  IAVLNode rightSon = new AVLNode(); //creating new non-real node as a right son
+	  myNode.setLeft(leftSon); //setting the left son of the node
+	  myNode.setRight(rightSon); //setting the right son of the node
+	  leftSon.setParent(myNode); // setting the left non-real node's parent to point the inserting node
+	  rightSon.setParent(myNode); // setting the right non-real node's parent to point the inserting node
+	  myNode.setKey(k); // setting the key of the node to the key we got in the func
+	  myNode.setValue(i); // setting the value of the node to the value we got in the func
+	  if(this.size==1){ // if the tree was empty (now has 1 node), there is no balancing needed
+		  return 0;
+	  }
+	  IAVLNode parent = myNode.parent;
+	  //if inserting to unary node so there is no balancing or promoting needed
+	  if(parent.getLeft().isRealNode() && parent.getRight().isRealNode()){ //no balancing required
+		  return 0;
+	  }
+	  //if inserting to a leaf node, so we increase the height of the parent in 1 and
+	  // checking the balance by the func balancing
+	  increaseLvlByD(parent,1);
+	  return (balance(parent.getParent()));
    }
 
   /**
@@ -114,15 +110,14 @@ public class AVLTree {
     */
    public String min()
    {
-   	IAVLNode pointer=root;
+   	IAVLNode pointer=root; //pointer the root
    	String min = null;
+   // while the node is real node, we continue to the left son, which is the smaller
    	while(pointer.isRealNode()){
-		min= pointer.getValue();
+		min = pointer.getValue();
 		pointer=pointer.getLeft();
-
 	}
    	return min;
-
    }
 
    /**
@@ -133,12 +128,12 @@ public class AVLTree {
     */
    public String max()
    {
-	   IAVLNode pointer=root;
+	   IAVLNode pointer=root; // pointer to the root
 	   String max = null;
+	   // while the node is real node, we continue to the right son, which is the bigger
 	   while(pointer.isRealNode()){
 		   max= pointer.getValue();
 		   pointer=pointer.getRight();
-
 	   }
 	   return max;
    }
@@ -151,24 +146,22 @@ public class AVLTree {
    */
   public int[] keysToArray()
   {
-  	int[] arr = new int[size];
-  	int i=0;
-
+  	int[] arr = new int[size]; // creating empty array in the size of the tree
+  	int i = 0;
   	Stack<IAVLNode> st = new Stack<>();
   	IAVLNode pointer = root;
-
+    // while the node is real or there are nodes in the stuck
   	while(pointer.isRealNode() || !st.isEmpty()){
 	  	while (pointer.isRealNode()){
 	  		st.push(pointer);
-	  		pointer=pointer.getLeft();
+	  		pointer = pointer.getLeft(); //continue to the left son of the node
 		}
 	  	pointer = st.pop();
-	  	arr[i] = pointer.getKey();
-//	  	System.out.println(Arrays.toString(arr));
-	  	i++;
-	  	pointer=pointer.getRight();
-	  }
-        return arr;
+	  	arr[i] = pointer.getKey(); // adding the key to the tha array
+	  	i++; // increasing the place which we need to insert the next key
+	  	pointer=pointer.getRight(); //continue to the right side of the node
+	}
+   return arr;
   }
 
   /**
@@ -180,21 +173,20 @@ public class AVLTree {
    */
   public String[] infoToArray()
   {
-	  String[] arr = new String[size];
+	  String[] arr = new String[size];  // creating empty array in the size of the tree
 	  int i=0;
-
 	  Stack<IAVLNode> st = new Stack<>();
 	  IAVLNode pointer = root;
-
+	  // while the node is real or there are nodes in the stuck
 	  while(pointer.isRealNode() || !st.isEmpty()){
 		  while (pointer.isRealNode()){
 			  st.push(pointer);
-			  pointer=pointer.getLeft();
+			  pointer=pointer.getLeft(); //continue to the left son of the node
 		  }
 		  pointer = st.pop();
-		  arr[i] = pointer.getValue();
-		  i++;
-		  pointer=pointer.getRight();
+		  arr[i] = pointer.getValue(); // adding the value to the tha array
+		  i++; // increasing the place which we need to insert the next value
+		  pointer=pointer.getRight(); //continue to the right side of the node
 	  }
 	  return arr;
   }
@@ -206,7 +198,6 @@ public class AVLTree {
     */
    public int size()
    {
-
 	   return size;
    }
    
@@ -248,31 +239,41 @@ public class AVLTree {
 	   return -1;
    }
 
-
-
-
+	/**
+	 * getting an  integer - key
+	 * searching the node with this key, returning the node if the node exist
+	 * else returning a non-real node whrere we will need to insert this node in order to
+	 * preserve the order of BST
+	 */
    private IAVLNode find(int key){
-   	IAVLNode pointer=root;
-   	while (pointer.isRealNode()){
-   		if(pointer.getKey()==key){
+   	IAVLNode pointer = root;
+   	while (pointer.isRealNode()){ // while the node is real
+		// if the current node key is what we are looking for we're returning this node
+	    if(pointer.getKey()==key){
    			return pointer;
 		}
+		// if the current node's key is bigger than k, we continue to the left son
 		else if(key<pointer.getKey()){
 			pointer=pointer.getLeft();
 		}
+		// if the current node's key is smaller than k, we continue to the right son
    		else if(key>pointer.getKey()){
    			pointer=pointer.getRight();
 		}
-	   }
-	   return pointer;
-   }
+	}
+	return pointer;
+ }
 
+	/**
+	 *
+	 * getting IAVL node and doing right rotation,
+	 * returning 1, the number of rotations
+	 */
    private int rotateRight(IAVLNode z){
    	IAVLNode x = z.getLeft();
    	IAVLNode parent = z.getParent();
    	IAVLNode b = x.getRight();
-   	if(z!=root){
-
+	if(z!=root){ // if we don't do rotation on the root
    		if(parent.getLeft()==z) {//z is a left son
 			parent.setLeft(x);
    		}
@@ -284,28 +285,28 @@ public class AVLTree {
    	else{
    		root = x;
 	}
+   // changing the pointers for right rotation
    	x.setParent(parent);
    	x.setRight(z);
    	z.setParent(x);
-	if(b!=null){
+
+	if(b!=null){ // if x had left son, we need to change pointers accordingly
 		z.setLeft(b);
 		b.setParent(z);
 	}
-
-
-   //	z.setHeight(z.getHeight()-1);
-	//x.setHeight(x.getHeight()+1);
-
-   	return 1;
+   	return 1; // we did only one rotation here
    }
 
-
+	/**
+	 *
+	 * getting IAVL node and doing left rotation,
+	 * returning 1, the number of rotations
+	 */
 	private int rotateLeft(IAVLNode z){
 		IAVLNode x = z.getRight();
 		IAVLNode parent = z.getParent();
 		IAVLNode b = x.getLeft();
-		if(z!=root){
-
+		if(z!=root){// if we don't do rotation on the root
 			if(parent.getRight()==z) {//z is a left son
 				parent.setRight(x);
 			}
@@ -317,51 +318,65 @@ public class AVLTree {
 		else{
 			root = x;
 		}
+		// changing the pointers for left rotation
 		x.setParent(parent);
 		x.setLeft(z);
 		z.setParent(x);
 
-		if(b!=null){
+		if(b!=null){// if x had left son, we need to change pointers accordingly
 			z.setRight(b);
 			b.setParent(z);
 		}
-
-
-		//z.setHeight(z.getHeight()-1);
-		//x.setHeight(x.getHeight()+1);
-
-		return 1;
+		return 1; // we did only one rotation here
 	}
 
+	/**
+	 *
+	 * getting IAVL node and doing left rotation and then right rotation,
+	 * returning 2, the number of rotations
+	 */
 	private int rotateLeftRight(IAVLNode z){
 		rotateLeft(z.getLeft());
 		rotateRight(z);
 		return 2;
 	}
+
+	/**
+	 *
+	 * getting IAVL node and doing right rotation and then left rotation,
+	 * returning 2, the number of rotations
+	 */
 	private int rotateRightLeft(IAVLNode z){
 		rotateRight(z.getRight());
 		rotateLeft(z);
 		return 2;
 	}
 
-
+	/**
+	 *
+	 * getting IAVL node, checking the balance (according to the node's sons)
+	 * and choosing according which balance operation to do
+	 * returning the number of balance operations which were preformed
+	 */
 	private int balance(IAVLNode myNode){
-   		if(myNode==null){
+   		if(myNode==null){ // if we got null there is no balancing needed
    			return 0;
 		}
-   		int diff = getDiff(myNode);
-		if(diff==1 || diff==-1){
-			myNode.setHeight(myNode.getHeight()+1);
+   		int diff = getDiff(myNode); // getting the diff height of the node's sons
+
+		if(diff==1 || diff==-1){ // if the diff is -1 or 1 so we increase the height in one
+			//and checking if balancing needed for the parent
+			increaseLvlByD(myNode, 1);
 			return 1+balance(myNode.getParent());
 		}
-		else if (diff==2){
-
-			if(getDiff(myNode.getLeft())==1){
-				myNode.setHeight(myNode.getHeight()-1);
+		else if (diff==2){ // if the diff is 2 we're splitting into two situations
+			if(getDiff(myNode.getLeft())==1){ // if the left son diff is 1, so we change
+				// the height accordingly and doing right rotation
+				increaseLvlByD(myNode,-1);
 				return rotateRight(myNode);
-
 			}
-			else //getDiff(myNode.getLeft())==-1
+			else // if the left son diff is -1, so we change
+			// the height accordingly and doing left-right rotation
 			{
 				increaseLvlByD(myNode,-1);
 				increaseLvlByD(myNode.getLeft(),-1);
@@ -370,13 +385,14 @@ public class AVLTree {
 			}
 		}
 
-		else if (diff==-2){
-
-			if(getDiff(myNode.getRight())==-1){
+		else if (diff==-2){ // if the diff is -2 we're splitting into two situations
+			if(getDiff(myNode.getRight())==-1){// if the right son diff is -1, so we change
+				// the height accordingly and doing left rotation
 				increaseLvlByD(myNode,-1);
 				return rotateLeft(myNode);
 			}
-			else //getDiff(myNode.getRight())==1
+			else // if the left son diff is 1, so we change
+			// the height accordingly and doing right-left rotation
 			{
 				increaseLvlByD(myNode,-1);
 				increaseLvlByD(myNode.getRight(),-1);
@@ -388,12 +404,19 @@ public class AVLTree {
 
 		return 0;
 	}
-	private int getDiff(IAVLNode myNode){//gap between left and right heights
-   		return myNode.getLeft().getHeight()-myNode.getRight().getHeight();
+
+	/**
+	 * getting an IAV node and returning the left son's height minus the right son's height
+	 */
+	private int getDiff(IAVLNode myNode){
+   		return myNode.getLeft().getHeight()-myNode.getRight().getHeight(); //gap between left and right heights
 	}
 
-	private void increaseLvlByD(IAVLNode myNode, int D){
-   	myNode.setHeight(myNode.getHeight()+D);
+	/**
+	 * getting a node and an integer (d) and increase his height in d
+	 */
+	private void increaseLvlByD(IAVLNode myNode, int d){
+   		myNode.setHeight(myNode.getHeight()+d);
 	}
 
 	/** 
@@ -423,70 +446,123 @@ public class AVLTree {
     * This class can and MUST be modified (It must implement IAVLNode).
     */
   public class AVLNode implements IAVLNode{
-  		private int key;
-  		private String info;
-	   	private IAVLNode left;
-	   	private IAVLNode right;
-	   	private int height;
-	   	private IAVLNode parent;
+  		private int key;  //The key of the node, affecting the order of the tree
+  		private String info; // The info of the node, not affecting the order of the tree
+	   	private IAVLNode left; // pointer to the left son of the node, can be real or not
+	   	private IAVLNode right; // pointer to the right son of the node, can be real or not
+	   	private int height; // value of the height of the node in the tree
+	   	private IAVLNode parent; // pointer to the parent of this node, if null the node is the root
 
-
+	   /**
+		* constructor of node, creating non-real node (height -1), when creating this node
+		* we may change his pointer to the parent according to func
+		* the other values are the default, and we will change them if the node becoming real
+		*/
 	   	public AVLNode()
 		{
 			this.height = -1;
-
 		}
 
+	   /**
+		* returning the key of this specific node
+		*/
 		public int getKey()
 		{
-			return this.key; //
+			return this.key;
 		}
+
+	   /**
+		* get integer and change the key of the node to this integer
+		*/
 		public void setKey(int k){
 	   		this.key = k;
 		}
+
+	   /**
+		* returning the value of this specific node
+		*/
 		public String getValue()
 		{
-			return this.info; // to be replaced by student code
+			return this.info;
 		}
+
+	   /**
+		* get String and change the info of the node to this String
+		*/
 	   	public void setValue(String i){
 		   this.info = i;
 	   }
-		public void setLeft(IAVLNode node)
-		{
-			this.left=node;
-		}
-		public IAVLNode getLeft()
-		{
-			return this.left; // to be replaced by student code
-		}
-		public void setRight(IAVLNode node)
-		{
-			this.right=node;
-		}
-		public IAVLNode getRight()
-		{
-			return this.right; // to be replaced by student code
-		}
-		public void setParent(IAVLNode node)
-		{
-			this.parent=node;
-		}
-		public IAVLNode getParent()
-		{
-			return this.parent; // to be replaced by student code
-		}
-		public boolean isRealNode()
-		{
-			return (height!=-1); // to be replaced by student code
-		}
-	    public void setHeight(int height)
-	    {
-	      this.height=height;
-	    }
-	    public int getHeight()
-	    {
-	      return this.height;
-	    }
+
+	   /**
+		* the func get a pointer to a IAVLNode and change the left son of the current node to point it
+		*/
+	   public void setLeft(IAVLNode node)
+	   {
+		   this.left=node;
+	   }
+
+	   /**
+		* returning a pointer to the left son of the node
+		*/
+	   public IAVLNode getLeft()
+	   {
+		   return this.left;
+	   }
+
+	   /**
+		* the func get a pointer to a IAVLNode and change the right son of the current node to point it
+		*/
+	   public void setRight(IAVLNode node)
+	   {
+		   this.right=node;
+	   }
+
+	   /**
+		* returning a pointer to the right son of the node
+		*/
+	   public IAVLNode getRight()
+	   {
+		   return this.right;
+	   }
+
+	   /**
+		* the func get a pointer to a IAVLNode and change the parent of the current node to point it
+		*/
+	   public void setParent(IAVLNode node)
+	   {
+		   this.parent=node;
+	   }
+
+	   /**
+		* returning a pointer to the parent of the node or null if it has no parent (will be the root)
+		*/
+	   public IAVLNode getParent()
+	   {
+		   return this.parent;
+	   }
+
+	   /**
+		* returning if the node is real - only non-real nodes has height -1
+		*/
+	   public boolean isRealNode()
+	   {
+		   return (height!=-1);
+	   }
+
+	   /**
+		* the func get integer and set the height of the node accordingly
+		*/
+	   public void setHeight(int height)
+	   {
+		   this.height=height;
+	   }
+	   /**
+		* returning integer of the height of the node
+		*/
+	   public int getHeight()
+	   {
+		   return this.height;
+	   }
 
 
   }
