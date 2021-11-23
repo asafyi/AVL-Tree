@@ -1,15 +1,15 @@
 Tasks:
 
 To complete:
-* need to write document with all the implimitations we did and the classes - AvlNode, AvlTree
+* review the document with all the implications we did so far and the classes - AvlNode, AvlTree
 
-* insert - to check if it returns the correct number of balance operations
 * delete
 * split 
 * join
 
 
 done:
+* insert - done! - maybe to verify that returning correct num of balancing operations
 * empty - done!
 * search - done!
 * min - done!
