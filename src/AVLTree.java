@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Stack;
 
 /**
@@ -84,8 +83,8 @@ public class AVLTree {
 	  }
 	  //if inserting to a leaf node, so we increase the height of the parent in 1 and
 	  // checking the balance by the func balancing
-	  increaseLvlByD(parent,1);
-	  return (balance(parent.getParent()));
+	  increaseHeight(parent,1);
+	  return 1+(balance(parent.getParent()));
    }
 
   /**
@@ -366,21 +365,21 @@ public class AVLTree {
 
 		if(diff==1 || diff==-1){ // if the diff is -1 or 1 so we increase the height in one
 			//and checking if balancing needed for the parent
-			increaseLvlByD(myNode, 1);
+			increaseHeight(myNode, 1);
 			return 1+balance(myNode.getParent());
 		}
 		else if (diff==2){ // if the diff is 2 we're splitting into two situations
 			if(getDiff(myNode.getLeft())==1){ // if the left son diff is 1, so we change
 				// the height accordingly and doing right rotation
-				increaseLvlByD(myNode,-1);
+				increaseHeight(myNode,-1);
 				return rotateRight(myNode);
 			}
 			else // if the left son diff is -1, so we change
 			// the height accordingly and doing left-right rotation
 			{
-				increaseLvlByD(myNode,-1);
-				increaseLvlByD(myNode.getLeft(),-1);
-				increaseLvlByD(myNode.getLeft().getRight(),1);
+				increaseHeight(myNode,-1);
+				increaseHeight(myNode.getLeft(),-1);
+				increaseHeight(myNode.getLeft().getRight(),1);
 				return rotateLeftRight(myNode);
 			}
 		}
@@ -388,15 +387,15 @@ public class AVLTree {
 		else if (diff==-2){ // if the diff is -2 we're splitting into two situations
 			if(getDiff(myNode.getRight())==-1){// if the right son diff is -1, so we change
 				// the height accordingly and doing left rotation
-				increaseLvlByD(myNode,-1);
+				increaseHeight(myNode,-1);
 				return rotateLeft(myNode);
 			}
 			else // if the left son diff is 1, so we change
 			// the height accordingly and doing right-left rotation
 			{
-				increaseLvlByD(myNode,-1);
-				increaseLvlByD(myNode.getRight(),-1);
-				increaseLvlByD(myNode.getRight().getLeft(),1);
+				increaseHeight(myNode,-1);
+				increaseHeight(myNode.getRight(),-1);
+				increaseHeight(myNode.getRight().getLeft(),1);
 
 				return rotateRightLeft(myNode);
 			}
@@ -415,7 +414,7 @@ public class AVLTree {
 	/**
 	 * getting a node and an integer (d) and increase his height in d
 	 */
-	private void increaseLvlByD(IAVLNode myNode, int d){
+	private void increaseHeight(IAVLNode myNode, int d){
    		myNode.setHeight(myNode.getHeight()+d);
 	}
 
