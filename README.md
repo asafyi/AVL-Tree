@@ -2,10 +2,10 @@ Tasks:
 
 To complete:
 * review the document with all the implications we did so far and the classes - AvlNode, AvlTree
+* put comments to delete, join, balance_del
 
-* delete
 * split 
-* join
+
 
 
 done:
@@ -18,7 +18,8 @@ done:
 * infoToArray - done!
 * size - done!
 * getRoot - done!
-
+* delete - done!
+* join - done!
 
 
 
