@@ -11,15 +11,28 @@ public class testing {
         tree.insert(2,"jgj");
         tree.insert(4,"jgj");
         tree.insert(8,"jgj");
+        tree.insert(14,"jgj");
+        tree.insert(12,"jgj");
+
+        tree.insert(74,"jgj");
+        tree.insert(78,"jgj");
+
+        tree.insert(18,"jgj");
+        tree.insert(124,"jgj");
+        tree.insert(15,"jgj");
 
 
-        tree2.insert(74,"jgj");
-        tree2.insert(78,"jgj");
-
-
-        System.out.println(tree3.insert(15,"jgj"));
-        tree.join(tree3.getRoot(),tree2);
+        // System.out.println(tree3.insert(15,"jgj"));
+       // tree.join(tree3.getRoot(),tree2);
         System.out.println(Arrays.toString(tree.keysToArray()) + " size "+tree.size+" height "+tree.root.getHeight());
+        AVLTree[] array =  tree.split(2);
+        tree2 = array[0];
+        tree3=array[1];
+        tree2.size=10;
+        tree3.size=10;
+
+        System.out.println("big tree"+ Arrays.toString( tree2.keysToArray()) + " size "+tree2.size+" height "+tree2.root.getHeight());
+        System.out.println("small tree"+ Arrays.toString( tree3.keysToArray()) + " size "+tree3.size+" height "+tree3.root.getHeight());
 //        System.out.println(tree.insert(-13,"jgj"));
 //        System.out.println(tree.insert(-20,"jgj"));
 //          System.out.println(tree.insert(-10,"jgj"));

@@ -345,9 +345,65 @@ public class AVLTree {
     */   
    public AVLTree[] split(int x)
    {
-	   return null; 
+       AVLTree smallerTree = new AVLTree();
+       AVLTree biggerTree = new AVLTree();
+       IAVLNode node = this.find(x);
+
+       smallerTree.root =node.getLeft();
+       smallerTree.root.setParent(null);
+
+       biggerTree.root =node.getRight();
+       biggerTree.root.setParent(null);
+
+       node.setLeft(null);
+       node.setRight(null);
+	   node = node.getParent();
+	   IAVLNode parent;
+	   if(node!=null) {
+		   parent = node.getParent();
+	   }
+	   else{
+		   parent=node;
+	   }
+       AVLTree tempTree = new AVLTree();
+
+       while(node!=null){
+
+           if(node.getKey()>x){//node is a right parent
+               tempTree.root=node.getRight();
+               tempTree.root.setParent(null);
+               //node.setRight(null);
+               biggerTree.join(node,tempTree);
+           }
+           else{//node is a left parent
+               tempTree.root=node.getLeft();
+               tempTree.root.setParent(null);
+               //node.setLeft(null);
+               smallerTree.join(node,tempTree);
+
+
+           }
+
+           node = parent;
+		   if(node!=null){
+			   parent=node.getParent();
+		   }
+
+
+
+       }
+
+       AVLTree[] arr=new AVLTree[2];
+       arr[0]=biggerTree;
+       arr[1]=smallerTree;
+	   return arr;
    }
-   
+
+
+
+
+
+
    /**
     * public int join(IAVLNode x, AVLTree t)
     *
@@ -394,7 +450,7 @@ public class AVLTree {
 	   }
 
 
-	   if(bigTree.getRoot().getKey()>x.getKey()){
+	   if(bigTree.getRoot().getKey()>x.getKey()){//bigger tree has higher values
 		   IAVLNode node=bigTree.root;
 		   int smallHeight=smallTree.getRoot().getHeight();
 		   while(node.getHeight()>smallHeight){//else the gap between the heights will be 0 or -1
@@ -412,14 +468,15 @@ public class AVLTree {
 		   this.root=bigTree.getRoot();
 
 
-		   x.setHeight(smallTree.getRoot().getHeight()+1);
+		   //before: x.setHeight(smallTree.getRoot().getHeight()+1);
+		   x.setHeight(smallHeight+1);
 		   increaseHeight(parent,1);
 		   //return balance(parent);
 		   balance(parent);
 		   return Math.abs(this.getRoot().getHeight()-t.root.getHeight())+1;
 
 	   }
-	   else{//bigTree.getRoot().getKey()<x.getKey()
+	   else{//bigTree.getRoot().getKey()<x.getKey() //smaller tree has higher values
 		   IAVLNode node=bigTree.root;
 		   int smallHeight=smallTree.getRoot().getHeight();
 		   while(node.getHeight()>smallHeight){//else the gap between the heights will be 0 or -1
@@ -437,9 +494,13 @@ public class AVLTree {
 		   this.root=bigTree.getRoot();
 		   this.size =smallTree.size()+ bigTree.size()+1;
 
-		   x.setHeight(smallTree.getRoot().getHeight()+1);
+		   //before: x.setHeight(smallTree.getRoot().getHeight()+1);
+		   x.setHeight(smallHeight+1);
 		   increaseHeight(parent,1);
-//		   return balance(parent);
+
+
+
+
 		   balance(parent);
 		   return Math.abs(this.getRoot().getHeight()-t.root.getHeight())+1;
 	   }
@@ -593,7 +654,7 @@ public class AVLTree {
 			}
 			else{//diff is 0
 				increaseHeight(myNode.getRight(),1);
-				return rotateLeft(myNode)+1;
+				return rotateRight(myNode)+1;
 
 			}
 		}
@@ -615,7 +676,7 @@ public class AVLTree {
 			}
 			else {//diff is 0
 				increaseHeight(myNode.getLeft(),1);
-				return rotateRight(myNode)+1;
+				return rotateLeft(myNode)+1;
 			}
 		}
 
@@ -733,7 +794,7 @@ public class AVLTree {
 	   	private IAVLNode right; // pointer to the right son of the node, can be real or not
 	   	private int height; // value of the height of the node in the tree
 	   	private IAVLNode parent; // pointer to the parent of this node, if null the node is the root
-
+		private int size; //size of the subtree whose root is the current node
 	   /**
 		* constructor of node, creating non-real node (height -1), when creating this node
 		* we may change his pointer to the parent according to func
@@ -845,6 +906,20 @@ public class AVLTree {
 		   return this.height;
 	   }
 
+	   /**
+		* the func get integer and set the height of the node accordingly
+		*/
+	   public void setSize(int size)
+	   {
+		   this.size=size;
+	   }
+	   /**
+		* returning integer of the height of the node
+		*/
+	   public int getSize()
+	   {
+		   return this.size;
+	   }
 
   }
 
