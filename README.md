@@ -1,15 +1,15 @@
 Tasks:
 
 To complete:
-* review the document with all the implications we did so far and the classes - AvlNode, AvlTree
-* put comments to delete, join, balance_del
-
-* split 
+* review the document , adding split
+* adding size for nodes in functions
+* putting comments to split
 
 
 
 done:
-* insert - done! - maybe to verify that returning correct num of balancing operations
+* split - done!
+* insert - done! 
 * empty - done!
 * search - done!
 * min - done!
