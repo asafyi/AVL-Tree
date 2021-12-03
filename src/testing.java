@@ -16,7 +16,7 @@ public class testing {
 
         tree.insert(74,"jgj");
         tree.insert(78,"jgj");
-
+        tree.delete(4);
         tree.insert(18,"jgj");
         tree.insert(124,"jgj");
         tree.insert(15,"jgj");
@@ -24,15 +24,15 @@ public class testing {
 
         // System.out.println(tree3.insert(15,"jgj"));
        // tree.join(tree3.getRoot(),tree2);
-        System.out.println(Arrays.toString(tree.keysToArray()) + " size "+tree.size+" height "+tree.root.getHeight());
-        AVLTree[] array =  tree.split(2);
+        System.out.println(Arrays.toString(tree.keysToArray()) + " size "+tree.size()+" height "+tree.root.getHeight());
+        AVLTree[] array =  tree.split(78);
         tree2 = array[0];
         tree3=array[1];
-        tree2.size=10;
-        tree3.size=10;
+        //tree2.size=10;
+        //tree3.size=10;
 
-        System.out.println("big tree"+ Arrays.toString( tree2.keysToArray()) + " size "+tree2.size+" height "+tree2.root.getHeight());
-        System.out.println("small tree"+ Arrays.toString( tree3.keysToArray()) + " size "+tree3.size+" height "+tree3.root.getHeight());
+        System.out.println("big tree"+ Arrays.toString( tree2.keysToArray()) + " size "+tree2.size() +" height "+tree2.root.getHeight());
+        System.out.println("small tree"+ Arrays.toString( tree3.keysToArray()) + " size "+tree3.size()+" height "+tree3.root.getHeight());
 //        System.out.println(tree.insert(-13,"jgj"));
 //        System.out.println(tree.insert(-20,"jgj"));
 //          System.out.println(tree.insert(-10,"jgj"));
