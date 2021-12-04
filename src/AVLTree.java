@@ -102,79 +102,71 @@ public class AVLTree {
    public int delete(int k)
    {
 		IAVLNode node= find(k); // returning pointer to the node in tree with the correct key,
-		IAVLNode parent = node.getParent(); //pointer to the parent of the node
-		IAVLNode spare = new AVLNode(); // pointer to new not real node
-		IAVLNode left = node.getLeft(); // pointer to the left son of the node
-		IAVLNode right = node.getRight(); // pointer to the right son of the node
+		IAVLNode parent = node.getParent();
+		IAVLNode spare = new AVLNode();
+		IAVLNode left = node.getLeft();
+		IAVLNode right = node.getRight();
 		IAVLNode z; //parent of the removed node
 
 	  if(!node.isRealNode()){//k isn't in the tree
-<<<<<<< HEAD
 		  return -1; //no changes needed
 	  }
 	  else {//k is in the tree
 		  //this.size-=1;
 		  updateBottomUp((AVLNode) node,-1);
-=======
-		  return -1; //no deleting needed
-	  }
-	  else {//k is in the tree
-		  this.size-=1; // updating the value of num of nodes in the tree
->>>>>>> d1d3498c0c7be1802f23c8da90e81138ad80ed31
 		  if (!left.isRealNode() && !right.isRealNode())//node has no kids
 		  {
 			  if(parent==null){ //root is the only node in the tree
 				  root=new AVLNode();
-				  return 0; // no balancing needed
+				  return 0;
 			  }
 			  if (parent.getLeft() == node) {//node is a left son
 				  parent.setLeft(spare);//spare is a non-real node
-				  spare.setParent(parent); // setting the not real node's parent
+				  spare.setParent(parent);
 			  } else {//node is a right son
 				  parent.setRight(spare);//spare is a non-real node
-				  spare.setParent(parent); // setting the not real node's parent
+				  spare.setParent(parent);
 			  }
 			  z = parent;
 		  }
 		  else if (left.isRealNode() && !right.isRealNode()) {//node only has a left son
-			  if(parent==null){ // if node is the root in the tree
+			  if(parent==null){
 				  left.setParent(root.getParent());
-				  root=left; // the left node is the new root
-				  return 0; // no balancing needed
+				  root=left;
+				  return 0;
 			  }
 			  if (parent.getLeft() == node) {//node is a left son
-				  parent.setLeft(left); // setting the left son of the parent
-				  left.setParent(parent); // setting the parent of the right son
+				  parent.setLeft(left);
+				  left.setParent(parent);
 			  } else {//node is a right son
-				  parent.setRight(left); // setting the right son of the parent
-				  left.setParent(parent); // setting the parent of the left son
+				  parent.setRight(left);
+				  left.setParent(parent);
 			  }
 			  z = parent;
 		  }
 		  else if (!left.isRealNode() && right.isRealNode()) {//node only has a right son
-			  if(parent==null){ // if node is the root in the tree
+			  if(parent==null){
 				  right.setParent(root.getParent());
-				  root=right; // the right node is the new root
-				  return 0; // no balancing needed
+				  root=right;
+				  return 0;
 			  }
 			  if (parent.getLeft() == node) {//node is a left son
-				  parent.setLeft(right); // setting the left son of the parent to the right son of the node
-				  right.setParent(parent); // setting the parent of the right son
+				  parent.setLeft(right);
+				  right.setParent(parent);
 			  } else {//node is a right son
-				  parent.setRight(right); // setting the right son of the parent
-				  right.setParent(parent); // setting the parent of the right son
+				  parent.setRight(right);
+				  right.setParent(parent);
 			  }
 			  z = parent;
 		  } else {//node has two sons
-			  IAVLNode successor = successor(node); // finding the successor of the node
-			  IAVLNode successorParent = successor.getParent(); // pointer to the parent of the successor
+			  IAVLNode successor = successor(node);
+			  IAVLNode successorParent = successor.getParent();
 
 			  this.updateBottomUp((AVLNode) successor,-1); //because moving the successor decreases its fathers size
 
 			  //moving successor to node's position
 			  successor.getRight().setParent(successor.getParent());
 			  successor.getParent().setRight(successor.getRight());
-<<<<<<< HEAD
 
 			  this.updateBottomUp((AVLNode) successor.getParent(),1); //because moving the successor increases its fathers size
 
@@ -184,12 +176,6 @@ public class AVLTree {
 
 
 			  if(parent==null){
-=======
-			  left.setParent(successor);
-			  right.setParent(successor);
-
-			  if(parent==null){ // if the successor is the root
->>>>>>> d1d3498c0c7be1802f23c8da90e81138ad80ed31
 				  root=successor;
 			  }
 			  else {
@@ -199,7 +185,7 @@ public class AVLTree {
 					  parent.setRight(successor);
 				  }
 			  }
-				// updating pointers of the successor
+
 			  successor.setLeft(node.getLeft());
 			  successor.setRight(node.getRight());
 			  successor.setParent(node.getParent());
@@ -222,8 +208,13 @@ public class AVLTree {
 
 //		  z.setHeight(max + 1);
 
-		  return balance_del(z); // calling the balancing for deletion func
+		  return balance_del(z);
+
+
 	  }
+	  
+		
+
    }
 
 
@@ -235,16 +226,15 @@ public class AVLTree {
   public IAVLNode successor(IAVLNode node){
   	  
 	  IAVLNode parent=node.getParent();
-	  if(node.getRight().isRealNode()){ // if the right node is real
-		  IAVLNode loop =node.getRight(); // saving pointer to the right son of the root
-		  // getting the most left real node under the right son of the root
+	  if(node.getRight().isRealNode()){
+		  IAVLNode loop =node.getRight();
+
 		  while(loop.getLeft().isRealNode()){
 			  loop=loop.getLeft();
 		  }
 	  	  return loop;
 	  }
-	  // if the root doesn't have real right son
-	  while (parent.isRealNode() && node==parent.getRight()){ // while parent is real, node is right son of parent
+	  while (parent.isRealNode() && node==parent.getRight()){
 		node = parent;
 		parent = node.getParent();
 	  }
@@ -434,6 +424,8 @@ public class AVLTree {
 			   parent=node.getParent();
 		   }
 
+
+
        }
 
        AVLTree[] arr=new AVLTree[2];
@@ -461,13 +453,8 @@ public class AVLTree {
 	   AVLTree bigTree;
 	   AVLTree smallTree;
 
-<<<<<<< HEAD
 	   //this.size =this.size()+ t.size()+1;
-=======
-	   this.size =this.size()+ t.size()+1; // updating the size of the tree
->>>>>>> d1d3498c0c7be1802f23c8da90e81138ad80ed31
 
-	   //checking which tree is higher
 	   if(this.getRoot().getHeight()>t.root.getHeight()){
 		   bigTree=this;
 		   smallTree=t;
@@ -476,11 +463,10 @@ public class AVLTree {
 		   bigTree=t;
 		   smallTree=this;
 	   }
-
 	   else{//same height
 
-		   x.setHeight((this.getRoot().getHeight()+1)); // updating the height
-		   if(this.getRoot().getKey()>x.getKey()){ // checking which tree as bigger values and change pointers accordingly
+			x.setHeight((this.getRoot().getHeight()+1));
+		   if(this.getRoot().getKey()>x.getKey()){
 			   x.setRight(this.root);
 			   x.setLeft(t.root);
 			   this.root.setParent(x);
@@ -492,26 +478,22 @@ public class AVLTree {
 			   x.setLeft(this.root);
 			   t.root.setParent(x);
 			   this.root.setParent(x);
+
 		   }
 		   this.root=x;
 		   return 1;
 	   }
 
+
 	   if(bigTree.getRoot().getKey()>x.getKey()){//bigger tree has higher values
 		   IAVLNode node=bigTree.root;
-<<<<<<< HEAD
 		   IAVLNode smallRoot = smallTree.getRoot();
 		   int smallHeight=smallRoot.getHeight();
 		   while(node.getHeight()>smallHeight){//else the gap between the heights will be 0 or -1
-=======
-		   int smallHeight = smallTree.getRoot().getHeight(); // saving the height of the small tree
-		   int bigHeight = bigTree.getRoot().getHeight(); // saving the height of the big tree
-		   while(node.getHeight()>smallHeight){//loop until the gap between the heights will be 0 or -1
->>>>>>> d1d3498c0c7be1802f23c8da90e81138ad80ed31
 			   node=node.getLeft();
 		   }
 			IAVLNode parent = node.getParent();
-			// changing pointers
+
 		   parent.setLeft(x);
 		   x.setParent(parent);
 		   node.setParent(x);
@@ -524,34 +506,27 @@ public class AVLTree {
 
 		   this.root=bigTree.getRoot();
 
-<<<<<<< HEAD
 
 
 
 
 		   //before: x.setHeight(smallTree.getRoot().getHeight()+1);
-=======
-		   //updating the heights
->>>>>>> d1d3498c0c7be1802f23c8da90e81138ad80ed31
 		   x.setHeight(smallHeight+1);
 		   increaseHeight(parent,1);
+		   //return balance(parent);
 		   balance(parent);
-		   return bigHeight-smallHeight+1;
+		   return Math.abs(this.getRoot().getHeight()-t.root.getHeight())+1;
+
 	   }
 	   else{//bigTree.getRoot().getKey()<x.getKey() //smaller tree has higher values
 		   IAVLNode node=bigTree.root;
-<<<<<<< HEAD
 		   IAVLNode smallRoot = smallTree.getRoot();
 		   int smallHeight=smallTree.getRoot().getHeight();
-=======
-		   int smallHeight=smallTree.getRoot().getHeight(); // saving the height of the small tree
-		   int bigHeight = bigTree.getRoot().getHeight(); // saving the height of the big tree
->>>>>>> d1d3498c0c7be1802f23c8da90e81138ad80ed31
 		   while(node.getHeight()>smallHeight){//else the gap between the heights will be 0 or -1
 			   node=node.getRight();
 		   }
 		   IAVLNode parent = node.getParent();
-			// changing pointers
+
 		   parent.setRight(x);
 		   x.setParent(parent);
 		   node.setParent(x);
@@ -559,7 +534,6 @@ public class AVLTree {
 		   x.setRight(smallRoot);
 		   smallTree.getRoot().setParent(x);
 
-<<<<<<< HEAD
 
 		   bigTree.updateBottomUp((AVLNode) x,smallTree.size()+1);
 
@@ -573,17 +547,14 @@ public class AVLTree {
 
 
 		   //before: x.setHeight(smallTree.getRoot().getHeight()+1);
-=======
-		   // updating the root and the size
-		   this.root=bigTree.getRoot();
-		   this.size =smallTree.size()+ bigTree.size()+1;
-		   // updating the height
->>>>>>> d1d3498c0c7be1802f23c8da90e81138ad80ed31
 		   x.setHeight(smallHeight+1);
 		   increaseHeight(parent,1);
 
+
+
+
 		   balance(parent);
-		   return bigHeight-smallHeight+1;
+		   return Math.abs(this.getRoot().getHeight()-t.root.getHeight())+1;
 	   }
 
 
@@ -781,37 +752,37 @@ public class AVLTree {
 	}
 
 
+
+
 	private int balance_del(IAVLNode myNode){
 
 		int SonsDiff;
-		if(myNode==null){ // if we got null there is no balancing needed because the node is root
+		if(myNode==null){ // if we got null there is no balancing needed
 			return 0;
 		}
-		int Diff = getDiff(myNode); // getting the diff height of the node's sons
-		if(Diff==0){ // if the diff is 0, so we decrease the height in one
-			//and checking if balancing needed for the parent
+		int Diff = getDiff(myNode);
+		if(Diff==0){// demote of father needed
 			increaseHeight(myNode,-1);
-			return 1+balance_del(myNode.getParent());
+			return 1+balance_del((myNode.getParent()));
 		}
-		else if(Diff==-1||Diff==1){  // so there is no balancing needed
+		else if(Diff==-1||Diff==1){
 			return 0;
 		}
-		else if(Diff==-2){ // if the diff is -2 we're splitting into two situations
+		else if(Diff==-2){
 			SonsDiff = getDiff(myNode.getRight());
-			if(SonsDiff == 0){ // if the right son diff is 0, so we change
-				// the height accordingly and doing left rotation
+			if(SonsDiff == 0){
+
 				increaseHeight(myNode,-1);
 				increaseHeight(myNode.getRight(),1);
 				return(rotateLeft(myNode)+2);
+
 			}
-			else if(SonsDiff == -1){ // if the right son diff is -1, so we change
-				// the height accordingly and doing left rotation and running balancing on his parent
+			else if(SonsDiff == -1){
 				increaseHeight(myNode,-2);
 
 				return(rotateLeft(myNode)+1+ balance_del(myNode.getParent().getParent()));// because mynode changed its location during rotate
 			}
-			else if(SonsDiff == 1){ // if the left son diff is 1, so we change
-				// the height accordingly and doing right-left rotation and running balancing on his parent
+			else if(SonsDiff == 1){
 				increaseHeight(myNode,-2);
 				increaseHeight(myNode.getRight(),-1);
 				increaseHeight(myNode.getRight().getLeft(),1);
@@ -819,31 +790,31 @@ public class AVLTree {
 			}
 
 		}
-		else if(Diff==2){ // if the diff is 2 we're splitting into two situations
+		else if(Diff==2){
 			SonsDiff = getDiff(myNode.getLeft());
-			if(SonsDiff == 0){// if the right son diff is 0, so we change
-				// the height accordingly and doing left rotation
+			if(SonsDiff == 0){
+
 				increaseHeight(myNode,-1);
 				increaseHeight(myNode.getLeft(),1);
 				return(rotateRight(myNode)+2);
+
 			}
-			else if(SonsDiff == 1){// if the right son diff is 1, so we change
-				// the height accordingly and doing right rotation and running balancing on his parent
+			else if(SonsDiff == 1){
 				increaseHeight(myNode,-2);
+
 				return(rotateRight(myNode)+1+ balance_del(myNode.getParent().getParent()));// because mynode changed its location during rotate
 			}
-			else if(SonsDiff == -1){ // if the left son diff is -1, so we change
-				// the height accordingly and doing left-right rotation and running balancing on his parent
+			else if(SonsDiff == -1){
 				increaseHeight(myNode,-2);
 				increaseHeight(myNode.getLeft(),-1);
 				increaseHeight(myNode.getLeft().getRight(),1);
 				return(rotateLeftRight(myNode)+1+ balance_del(myNode.getParent().getParent()));// because mynode changed its location during rotate
 			}
+
 		}
+
 	return 0;
 	}
-
-
 	/**
 	 * getting an IAV node and returning the left son's height minus the right son's height
 	 */
