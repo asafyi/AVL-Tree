@@ -164,7 +164,7 @@ public class AVLTree {
 			  successor.getRight().setParent(successor.getParent());
 			  successor.getParent().setRight(successor.getRight());
 
-			  this.updateBottomUp(successor.getParent()); //because moving the successor increases its fathers size
+//			  this.updateBottomUp(successor.getParent()); //because moving the successor increases its fathers size
 
 			  left.setParent(successor);
 			  right.setParent(successor);
@@ -381,7 +381,7 @@ public class AVLTree {
 		   while(node!=null){
 			   if(node.getKey()>x){//node is a right parent
 				   tempTree.root=node.getRight();
-				   this.updateBottomUp(parent);
+//				   this.updateBottomUp(parent);
 				   tempTree.root.setParent(null);
 				   //node.setRight(null);
 				   node.setSize(1); //we treat him as a single node
@@ -721,9 +721,12 @@ public class AVLTree {
 		return 0;
 	}
 
-
-
-
+	/**
+	 *
+	 * getting IAVL node, checking the balance (according to the node's sons)
+	 * and choosing according which balance operation to do for the deletion
+	 * returning the number of balance operations which were preformed
+	 */
 	private int balance_del(IAVLNode myNode){
 
 		int SonsDiff;
