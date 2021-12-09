@@ -1,9 +1,7 @@
 Tasks:
 
 To complete:
-* review the document , adding split
-* adding size for nodes in functions
-* putting comments to split
+
 
 
 
