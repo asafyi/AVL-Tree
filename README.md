@@ -1,4 +1,4 @@
-#AVL Tree
+# AVL Tree   
 AVL Tree class implementation in Java. An AVL tree self-balancing binary search tree.   
 In this data structure, the heights of the two child subtrees of any node differ by at most one and if at any time 
 they differ by more than one, *rebalancing* is done to restore this property.   
@@ -9,13 +9,13 @@ sons (helping in rebalancing the tree).
 For more information about AVL trees and their rebalancing methods can be found in ["Notes on AVL Trees"](Notes_on_AVL_Trees.pdf)
 and many Data Structures and Algorithms books.
 
-##Usage
+## Usage
 In order to use the AVLTree and AVLNode instances you should download the files, place them in the correct directory 
 and import the package as in the example:
 ```java
 import AVLTree.*;
 ```
-###AVLTree Class
+### AVLTree Class
 | Function                    | Description                                                                                                                                                                                                                                                                                                                                      |
 |-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | empty()                     | Return True if the tree is empty.                                                                                                                                                                                                                                                                                                                |
@@ -31,7 +31,7 @@ import AVLTree.*;
 | join(AVLNode x, AVLtree t)  | The function gets a node x and a tree t which all their keys are smaller or bigger than all the keys in the current tree. The function connects the trees with the new node to the current AVL tree. The function returns the new number of rebalncing actions which were occurred.                                                              |
 | getRoot()                   | Returning the node which is the root of the tree.                                                                                                                                                                                                                                                                                                |
 
-###AVLNode SubClass
+### AVLNode SubClass
 | Function         | Description                                                        |
 |------------------|--------------------------------------------------------------------|
 | getKey()         | Returning the key of the node.                                     |
