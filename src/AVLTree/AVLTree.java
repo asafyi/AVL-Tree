@@ -774,6 +774,13 @@ public class AVLTree {
 	private void increaseHeight(AVLNode node, int d){
 		node.setHeight(node.getHeight()+d);
 	}
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * public class AVLNode
 	 *
